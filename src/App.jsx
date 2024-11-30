@@ -1,7 +1,17 @@
+import { useState } from "react";
+import { MovieContext, ThemeContext } from "./context";
+import Home from "./Home";
+
 export default function App() {
+  const [cartItems, setCartItems] = useState([]);
+  const [darkMode, setDarkMode] = useState(true);
   return (
-    <h1 className="text-3xl font-bold underline text-center text-red-700">
-      Hello world!
-    </h1>
+    <>
+      <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
+        <MovieContext.Provider value={{ cartItems, setCartItems }}>
+          <Home />
+        </MovieContext.Provider>
+      </ThemeContext.Provider>
+    </>
   );
 }
