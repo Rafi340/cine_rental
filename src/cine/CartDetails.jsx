@@ -1,12 +1,19 @@
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import Delete from "../assets/delete.svg";
 import Checkout from "../assets/icons/checkout.svg";
 import { MovieContext } from "../context";
 import { getImageUrl } from "../utils/helper";
 const CartDetails = ({ onClose }) => {
-  const { cartItems, setCartItems } = useContext(MovieContext);
+  const { state, dispatch } = useContext(MovieContext);
+  const { cartItems } = state;
   const handleDelete = (movie) => {
-    setCartItems(cartItems?.filter((t) => t.id !== movie.id));
+    dispatch({
+      type: "REMOVE_FROM_CART",
+      payload: movie,
+    });
+    toast.success(`Remove ${movie.title} movie complete`);
+    // setCartItems(cartItems?.filter((t) => t.id !== movie.id));
   };
   return (
     <>

@@ -1,12 +1,15 @@
 import { useContext, useState } from "react";
-import { MovieContext } from "../context";
+import { toast } from "react-toastify";
+import { MovieContext } from "../context/index";
 import { getImageUrl } from "../utils/helper";
 import MovieDetailsModals from "./MovieDetailsModals";
 import Rating from "./Rating";
 const MovieCard = ({ movie }) => {
   const [showModal, setShowModal] = useState(false);
   const [select, setSelect] = useState(null);
-  const { cartItems, setCartItems } = useContext(MovieContext);
+
+  const { state, dispatch } = useContext(MovieContext);
+  const { cartItems } = state;
   const handleModalClose = () => {
     setShowModal(!showModal);
     setSelect(null);
@@ -17,12 +20,17 @@ const MovieCard = ({ movie }) => {
   };
   const addToCart = (e, movie) => {
     e.stopPropagation();
-    console.log(movie);
+    console.log(state);
     const find = cartItems?.find((t) => t.id === movie.id);
+
     if (!find) {
-      setCartItems([...cartItems, movie]);
+      dispatch({
+        type: "ADD_TO_CART",
+        payload: { ...movie },
+      });
+      toast.success("Wow Added the movie");
     } else {
-      console.log(`Already added this ${movie.name}`);
+      toast.error("Wow Already Added this move!");
     }
   };
   return (
